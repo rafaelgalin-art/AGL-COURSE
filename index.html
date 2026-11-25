@@ -110,7 +110,7 @@ function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){
 let DB = null, USER = null, DL = null, uid = null, isAdmin = false;
 
 function render(){
-  $('#who').textContent = S.name ? 'משתתף: ' + S.name : '';
+  $('#who').textContent = S.name ? 'משתתף: ' + S.name + ' · תאריך ביצוע: ' + fmtDate(new Date().toISOString()) : '';
   const v = S.view;
   if (v === 'start') return renderStart();
   if (v === 'admin') return renderAdmin();
@@ -293,7 +293,7 @@ function renderResult(){
     $('#mat').onclick=()=>{ S.view='learn'; S.ch=0; S.sl=0; save(); render(); };
   });
   return `<div class="card result">
-    <div class="small">תוצאת המבחן המסכם · ${fmtDate(at.date)}</div>
+    <div class="small">תוצאת המבחן המסכם · תאריך ביצוע: ${fmtDate(at.date)}</div>
     <h2 style="font-size:30px;margin:8px 0 14px">${esc(S.name)}</h2>
     <div class="score ${cls}">${at.score}</div>
     <div class="badge ${cls}">${at.passed?'עבר':'לא עבר'}</div>
@@ -330,6 +330,7 @@ async function drawCert(){
   x.fillStyle='#3F4B5A'; x.font='400 34px Heebo';
   x.fillText('השלים/ה את הרענון המקצועי בתאורת מסלולים', W/2, 560);
   x.fillText('ונבחן/ה במבחן המסכם (10 שאלות, ציון עובר '+PASS+')', W/2, 612);
+  x.fillStyle='#13202F'; x.font='600 34px Heebo'; x.fillText('תאריך ביצוע: '+fmtDate(at.date), W/2, 668);
   const col = at.passed?'#2E9E5B':'#D64545';
   x.fillStyle=col; x.font='700 120px Rubik'; x.fillText(String(at.score), W/2-170, 790);
   x.font='400 30px Heebo'; x.fillStyle='#5D6876'; x.fillText('ציון', W/2-170, 840);
@@ -337,7 +338,7 @@ async function drawCert(){
   x.fillStyle='#fff'; x.font='700 56px Rubik'; x.fillText(at.passed?'עבר':'לא עבר', W/2+170, 775);
   x.fillStyle='#5D6876'; x.font='400 30px Heebo'; x.fillText('תוצאה', W/2+170, 840);
   x.fillStyle='#3F4B5A'; x.font='400 28px Heebo';
-  x.fillText('תאריך: '+fmtDate(at.date)+'   ·   תשובות נכונות: '+at.good+' מתוך 10', W/2, 945);
+  x.fillText('תשובות נכונות: '+at.good+' מתוך 10', W/2, 945);
   x.strokeStyle='#9AA3AE'; x.lineWidth=2;
   x.beginPath(); x.moveTo(220,1030); x.lineTo(620,1030); x.stroke();
   x.beginPath(); x.moveTo(980,1030); x.lineTo(1380,1030); x.stroke();
